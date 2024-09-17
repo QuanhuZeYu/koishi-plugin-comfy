@@ -1,6 +1,6 @@
 import Data from "../Data";
 import tools from "../tools";
-import { Prompt } from "./interface/api_1_type";
+import { Prompt } from "./interface/workflow_api_1_type";
 
 /**
  * 可发送空prompt请求

@@ -2,7 +2,7 @@ import { Argv, h } from "koishi";
 import Data from "../Data";
 import tools from "../tools";
 import comfyui from "../comfyui";
-import { } from "../comfyui/interface/api_1_type";
+import { } from "../comfyui/interface/workflow_api_1_type";
 import { UserInputPrompt } from "../comfyui/interface/api_type";
 
 

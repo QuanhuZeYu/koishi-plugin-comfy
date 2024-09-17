@@ -1,4 +1,4 @@
-import { Prompt } from "./api_1_type"
+import { Prompt } from "./workflow_api_1_type"
 
 export type  History = {
     [index: string]: PromptIDHistory

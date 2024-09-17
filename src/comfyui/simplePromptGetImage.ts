@@ -1,6 +1,6 @@
 import path from "path";
 import Data from "../Data";
-import { Prompt } from "./interface/api_1_type";
+import { Prompt } from "./interface/workflow_api_1_type";
 import fs from "fs"
 import { v4 as uuidv4 } from 'uuid';
 import { History, HistoryOutputs, HistoryOutputsImages, PromptIDHistory } from "./interface/history_type";
@@ -11,14 +11,15 @@ import { UserInputPrompt } from "./interface/api_type";
 
 async function simplePromptGetImage(prompt: UserInputPrompt) {
     const debug = tools.debug
-    const baseData = Data.baseData;
+    const baseData = Data.baseData
+    const config = baseData.config
+    
     debug(baseData.comfyPluginDir)
     const apiPath = path.resolve(baseData.comfyPluginDir, "comfyui", "api_1.json");
     debug(`api路径拼接为: ${apiPath}`)
     const apiText = fs.readFileSync(apiPath, { encoding: "utf-8" });
     let apiJson: Prompt = JSON.parse(apiText);
 
-    // Generate values for seed, steps, cfg, width, height, Ptext, Ntext
     const seed = Math.floor(Math.random() * 34359738368) || Math.floor(prompt.seed);
     const steps = (prompt.steps <= 40 && prompt.steps > 5) ? Math.ceil(prompt.steps) : 20;
     const cfg = (prompt.cfg > 0 && prompt.cfg < 10) ? Math.ceil(prompt.cfg) : 7;
@@ -26,7 +27,8 @@ async function simplePromptGetImage(prompt: UserInputPrompt) {
     const height = (prompt.height > 64 && prompt.height <= 2048) ? Math.ceil(prompt.height) : 1024;
     const Ptext = (prompt.Ptext ? prompt.Ptext : "anime,best quality,8k,ultra detailed,masterpiece, blue_hair, blue_eyes, full_body, In the study, Dressed in earth-gray mage's robes, wearing a hat") + ',';
     const Ntext = (prompt.Ntext.length>50 ? prompt.Ntext : prompt.Ntext+",bad,unfinished,displeasing,cropped,jpeg artifacts,text,extra digit,missing fingers,fewer digits,artist name,signature,low quality,username,error,bad hands,lowres,worst quality,watermark,bad anatomy, bad eyes,") + '(NSFW:1.5)';
-    const cModel = (prompt.cModel ? prompt.cModel : apiJson[4].inputs.ckpt_name)
+    const cModel = (prompt.cModel ? ((await comfyui.getModules('checkpoints')).includes(prompt.cModel) ? prompt.cModel : config.comfyDefaultModel) : config.comfyDefaultModel)
+    const vaeDecode = (prompt.vaeDecode ? prompt.vaeDecode : config.comfyDefaultDecodeVae)
 
     apiJson[3].inputs.seed = seed
     apiJson[3].inputs.steps = steps
@@ -36,6 +38,7 @@ async function simplePromptGetImage(prompt: UserInputPrompt) {
     apiJson[5].inputs.height = height
     apiJson[6].inputs.text = Ptext
     apiJson[7].inputs.text = Ntext
+    apiJson[11].inputs.vae_name = vaeDecode
 
     let promptID = await comfyui.queuePrompt(apiJson)
     promptID = promptID.prompt_id;

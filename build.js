@@ -12,7 +12,7 @@ try {
     console.log(`Navigating to directory: ${upperUpperDir}`);
     process.chdir(upperUpperDir);
     console.log(`Running "npm run build comfyui" in ${upperUpperDir}...`);
-    execSync('npm run build gtnh-wiki', { stdio: 'inherit' });
+    execSync('npm run build comfyui', { stdio: 'inherit' });
 } catch (error) {
     console.error(`Error running npm build: ${error}`);
     process.exit(1);

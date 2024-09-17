@@ -1,4 +1,4 @@
-import { } from "../comfyui/interface/api_1_type"
+import { } from "../comfyui/interface/workflow_api_1_type"
 import { UserInputPrompt } from "../comfyui/interface/api_type"
 
 
@@ -11,6 +11,7 @@ function getPromptArgs(message:string) {
     const Ptext = getArg('Ptext', message)  || getArg('\u6b63', message)  // 匹配中文字符：正
     const Ntext = getArg('Ntext', message)  || getArg('\u53cd', message)  // 匹配中文字符：反
     const cModel = getArg('cModel', message)  || getArg('\u6a21\u578b', message)  // 匹配中文字符：模型
+    const vaeDecode = getArg('vaeDecode', message) || getArg('\u89e3\u7801\u5668', message)  // 匹配中文字符：解码器
 
     const prompt:UserInputPrompt = {
         seed: Number.parseInt(seed),
@@ -20,7 +21,8 @@ function getPromptArgs(message:string) {
         height: Number.parseInt(height),
         Ptext: Ptext,
         Ntext: Ntext,
-        cModel: cModel
+        cModel: cModel,
+        vaeDecode: vaeDecode
     }
     return prompt
 }
