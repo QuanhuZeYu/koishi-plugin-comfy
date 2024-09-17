@@ -39,9 +39,9 @@ async function simplePromptGetImage(prompt: UserInputPrompt) {
 
     let promptID = await comfyui.queuePrompt(apiJson)
     promptID = promptID.prompt_id;
-    tools.debug('Prompt_id', promptID);
-    let history:History = await getHistory(promptID)
-    tools.debug('History.prompt_id', history?.[promptID])
+    debug('Prompt_id', promptID);
+    const history:History = await getHistory(promptID)
+    debug('History.prompt_id', (history?.[promptID])===undefined)
     const historyPromptID = history?.[promptID]
     const pics = await findLatestImage_FromHistory(historyPromptID)
     debug('图片数量: ', pics.length)

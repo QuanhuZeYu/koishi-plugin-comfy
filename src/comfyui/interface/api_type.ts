@@ -104,4 +104,5 @@ export type UserInputPrompt = {
 	Ntext?: string
 
 	cModel?: string
+	vaeDecode?: string
 }

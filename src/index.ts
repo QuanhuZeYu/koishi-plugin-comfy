@@ -16,6 +16,7 @@ export interface Config {
 	debug: boolean
 	comfyUILocal: string
 	comfyDefaultModel: string
+	comfyDefaultDecodeVae: string
 }
 
 export const Config: Schema<Config> = Schema.object({
@@ -23,14 +24,15 @@ export const Config: Schema<Config> = Schema.object({
 	
 	debug: Schema.boolean().default(true).description('是否开启调试模式'),
 	comfyUILocal: Schema.string().default('127.0.0.1:8188').description('ComfyUI本地监听路径'),
-	comfyDefaultModel: Schema.string().default('animagineXLV31_v31.safetensors').description('调用绘图时默认使用的模型名称，请根据自己的实际情况来选择！')
+	comfyDefaultModel: Schema.string().default('animagineXLV31_v31.safetensors').description('调用绘图时默认使用的模型名称，请根据自己的实际情况来选择！'),
+	comfyDefaultDecodeVae: Schema.string().default('sdxl_vae_fp16fix.safetensors').description('调用绘图时默认使用的VAE名称，请根据自己的实际情况来选择！'),
 })
 
 export function apply(ctx: Context) {
 	const 绘图使用指南 = `可用参数: seed|种子 steps|步数 cfg|匹配度 width|宽 height|高 ptext|正(正面提示词) ntext|反(负面提示词) cModel|模型(模型名称)`
 	const baseData = Data.baseData
 	Event.setupBaseData(ctx)  // 初始化需要的资源
-	Event.findValidModel()
+	Event.findValidModel.findValid()
 
 	const q_comfy = ctx.command('q-comfy', 'comfyUI api调用绘图插件').usage(`基本使用指南：命令+空格+关键字+[:或者=或者,]+< + 内容 + >\n例如：q-绘图 ptext: <a cat, 4k, masterpiece>ntext: <NSFW, unfinished drawing>`)
 
@@ -41,5 +43,9 @@ export function apply(ctx: Context) {
 	q_comfy.subcommand('q-获取模型', '获取所有基础模型')
 		.action((argv,message) => { 
 			commands.getCheckpoints(argv,message)
+		})
+	q_comfy.subcommand('q-获取VAE', '获取VAE')
+		.action((argv,message) => { 
+			commands.getVAEs(argv,message)
 		})
 }
