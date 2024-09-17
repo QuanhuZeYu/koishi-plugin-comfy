@@ -1,0 +1,158 @@
+{
+	"bd301e82-888c-4604-8c77-dce33734b891": {
+		"prompt": [
+			50,
+			"bd301e82-888c-4604-8c77-dce33734b891",
+			{
+				"3": {
+					"inputs": {
+						"seed": 8852447250,
+						"steps": 20,
+						"cfg": 7,
+						"sampler_name": "dpmpp_2m",
+						"scheduler": "karras",
+						"denoise": 1,
+						"model": ["4", 0],
+						"positive": ["6", 0],
+						"negative": ["7", 0],
+						"latent_image": ["5", 0]
+					},
+					"class_type": "KSampler",
+					"_meta": {
+						"title": "K采样器"
+					}
+				},
+				"4": {
+					"inputs": {
+						"ckpt_name": "animagineXLV31_v31.safetensors"
+					},
+					"class_type": "CheckpointLoaderSimple",
+					"_meta": {
+						"title": "Checkpoint加载器(简易)"
+					}
+				},
+				"5": {
+					"inputs": {
+						"width": 1024,
+						"height": 1024,
+						"batch_size": 1
+					},
+					"class_type": "EmptyLatentImage",
+					"_meta": {
+						"title": "空Latent"
+					}
+				},
+				"6": {
+					"inputs": {
+						"text": "anime,best quality,8k,ultra detailed,masterpiece, blue_hair, blue_eyes, full_body, In the study, Dressed in earth-gray mage's robes, wearing a hat,",
+						"speak_and_recognation": true,
+						"clip": ["4", 1]
+					},
+					"class_type": "CLIPTextEncode",
+					"_meta": {
+						"title": "CLIP文本编码器"
+					}
+				},
+				"7": {
+					"inputs": {
+						"text": "bad,unfinished,displeasing,cropped,jpeg artifacts,text,extra digit,missing fingers,fewer digits,artist name,signature,low quality,username,error,bad hands,lowres,worst quality,watermark,bad anatomy, bad eyes,",
+						"speak_and_recognation": true,
+						"clip": ["4", 1]
+					},
+					"class_type": "CLIPTextEncode",
+					"_meta": {
+						"title": "CLIP文本编码器"
+					}
+				},
+				"8": {
+					"inputs": {
+						"samples": ["3", 0],
+						"vae": ["11", 0]
+					},
+					"class_type": "VAEDecode",
+					"_meta": {
+						"title": "VAE解码"
+					}
+				},
+				"10": {
+					"inputs": {
+						"images": ["8", 0]
+					},
+					"class_type": "PreviewImage",
+					"_meta": {
+						"title": "预览图像"
+					}
+				},
+				"11": {
+					"inputs": {
+						"vae_name": "sdxl_vae_fp16fix.safetensors"
+					},
+					"class_type": "VAELoader",
+					"_meta": {
+						"title": "VAE加载器"
+					}
+				},
+				"12": {
+					"inputs": {
+						"images": ["8", 0]
+					},
+					"class_type": "SaveImageWebsocket",
+					"_meta": {
+						"title": "保存图像到网络接口"
+					}
+				}
+			},
+			{
+				"client_id": "1aff37b7-7a69-46dc-be49-bc776edf3904"
+			},
+			["12", "10"]
+		],
+		"outputs": {
+			"10": {
+				"images": [
+					{
+						"filename": "ComfyUI_temp_uzlxr_00029_.png",
+						"subfolder": "",
+						"type": "temp"
+					}
+				]
+			}
+		},
+		"status": {
+			"status_str": "success",
+			"completed": true,
+			"messages": [
+				[
+					"execution_start",
+					{
+						"prompt_id": "bd301e82-888c-4604-8c77-dce33734b891",
+						"timestamp": 1726528186543
+					}
+				],
+				[
+					"execution_cached",
+					{
+						"nodes": ["4", "5", "6", "7", "11"],
+						"prompt_id": "bd301e82-888c-4604-8c77-dce33734b891",
+						"timestamp": 1726528186549
+					}
+				],
+				[
+					"execution_success",
+					{
+						"prompt_id": "bd301e82-888c-4604-8c77-dce33734b891",
+						"timestamp": 1726528195918
+					}
+				]
+			]
+		},
+		"meta": {
+			"10": {
+				"node_id": "10",
+				"display_node": "10",
+				"parent_node": null,
+				"real_node_id": "10"
+			}
+		}
+	}
+}
